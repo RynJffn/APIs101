@@ -3,129 +3,57 @@
 Full Article with implementation:
 > [Node.js PostgreSQL CRUD example with Express Rest APIs](https://bezkoder.com/node-express-sequelize-postgresql/)
 
-We will build Rest Apis that can create, retrieve, update, delete and find Tutorials by title.
-
 The following table shows overview of the Rest APIs that will be exported:
 
-- GET     `api/tutorials`	            get all Tutorials
-- GET     `api/tutorials/:id`         get Tutorial by id
-- POST    `api/tutorials`             add new Tutorial
-- PUT     `api/tutorials/:id`         update Tutorial by id
-- DELETE  `api/tutorials/:id`         remove Tutorial by id
-- DELETE  `api/tutorials`             remove all Tutorials
-- GET     `api/tutorials/published`   find all published Tutorials
-- GET     `api/tutorials?title=[kw]`  find all Tutorials which title contains 'kw'
+- GET     `api/movies`	           get all Movies
+- GET     `api/movies/:id`         get Movie by id
+- POST    `api/movies`             add new Movie
+- PUT     `api/movies/:id`         update Movie by id
+- DELETE  `api/movies/:id`         remove Movie by id
 
-## Demo Video
-This is our Node.js PostgreSQL CRUD example using Express & Sequelize application demo, test Rest Apis with Postman.
+## Model
 
-[![Node.js PostgreSQL CRUD example Github](http://img.youtube.com/vi/x1pZHN_sjGk/0.jpg)](http://www.youtube.com/watch?v=x1pZHN_sjGk "Node.js PostgreSQL CRUD example Github")
+| Field | Type  | Description
+|---    |---    |---
+| `id` | `string` | A UUID for the movie (automatically generated)
+| `name` | `string` | Name of the movie
+| `genre` | `string` | Movie genre
+| `img` | `string` | URL to a movie poster image
+| `updatedAt` | `string` | Updated timestamp (automatically generated)
+| `createdAt` | `string` | Creation timestamp (automatically generated)
 
-### Test the APIs
-Run our Node.js application with command: `node server.js`.
+Example:
 
-Using Postman, we're gonna test all the Apis above.
-
-- Create a new Tutorial using `POST /tutorials` Api
-
-![node-js-postgresql-crud-example-create](https://dev-to-uploads.s3.amazonaws.com/i/hqvz8ra9p21z927iwzph.png)
-
-After creating some new Tutorials, you can check PostgreSQL table:
-```testdb=# select * from tutorials;
- id |    title    |    description    | published |         createdAt          |         updatedAt
-----+-------------+-------------------+-----------+----------------------------+----------------------------
-  1 | Node Tut #1 | Tut#1 Description | f         | 2020-01-29 10:42:57.121+07 | 2020-01-29 10:42:57.121+07
-  2 | Node Tut #2 | Tut#2 Description | f         | 2020-01-29 10:43:05.131+07 | 2020-01-29 10:43:05.131+07
-  3 | Node Tut #3 | Tut#3 Description | f         | 2020-01-29 10:43:48.028+07 | 2020-01-29 10:43:48.028+07
-  4 | Js Tut #4   | Tut#4 Desc        | f         | 2020-01-29 10:45:40.016+07 | 2020-01-29 10:45:40.016+07
-  5 | Js Tut #5   | Tut#5 Desc        | f         | 2020-01-29 10:45:44.289+07 | 2020-01-29 10:45:44.289+07
+```json
+{
+    "id": "630e28f8-0048-41f3-833a-dc0657309f0b",
+    "name": "Dune",
+    "genre": "Science Fiction",
+    "img": "https://m.media-amazon.com/images/M/MV5BN2FjNmEyNWMtYzM0ZS00NjIyLTg5YzYtYThlMGVjNzE1OGViXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1000_.jpg",
+    "updatedAt": "2021-12-17T18:55:47.053Z",
+    "createdAt": "2021-12-17T18:55:47.053Z"
+}
 ```
 
-- Retrieve all Tutorials using `GET /tutorials` Api
+## Setup
 
-![node-js-postgresql-crud-example-retrieve-all](https://dev-to-uploads.s3.amazonaws.com/i/m9razjm1njgww58er3as.png)
+Update `config/db.config.js` with the values for your local database.
 
-- Retrieve a single Tutorial by id using `GET /tutorials/:id` Api
+Install the application
 
-![node-js-postgresql-crud-example-retrieve-one](https://dev-to-uploads.s3.amazonaws.com/i/0kuojvc596i5u423od2b.png)
-
-- Update a Tutorial using `PUT /tutorials/:id` Api
-
-![node-js-postgresql-crud-example-update](https://dev-to-uploads.s3.amazonaws.com/i/3buqfz0by0lu2z4kf3uq.png)
-
-Check `tutorials` table after some rows were updated:
-```testdb=# select * from tutorials;
- id |     title      |    description    | published |         createdAt          |         updatedAt
-----+----------------+-------------------+-----------+----------------------------+----------------------------
-  1 | Node Tut #1    | Tut#1 Description | f         | 2020-01-29 10:42:57.121+07 | 2020-01-29 10:42:57.121+07
-  3 | Node Tut #3    | Tut#3 Description | f         | 2020-01-29 10:43:48.028+07 | 2020-01-29 10:43:48.028+07
-  2 | Node Js Tut #2 | Tut#2 Description | t         | 2020-01-29 10:43:05.131+07 | 2020-01-29 10:51:55.235+07
-  4 | Js Tut #4      | Tut#4 Desc        | t         | 2020-01-29 10:45:40.016+07 | 2020-01-29 10:54:17.468+07
-  5 | Js Tut #5      | Tut#5 Desc        | t         | 2020-01-29 10:45:44.289+07 | 2020-01-29 10:54:20.544+07
-```
-
-- Find all Tutorials which title contains 'js': `GET /tutorials?title=js`
-
-![node-js-postgresql-crud-example-search](https://dev-to-uploads.s3.amazonaws.com/i/u2hbmz5r35o7uo09y3z5.png)
-
-- Find all published Tutorials using `GET /tutorials/published` Api
-
-![node-js-postgresql-crud-example-search-status](https://dev-to-uploads.s3.amazonaws.com/i/dbo753wfqibt0b93d82d.png)
-
-- Delete a Tutorial using `DELETE /tutorials/:id` Api
-
-![node-js-postgresql-crud-example-delete-one](https://dev-to-uploads.s3.amazonaws.com/i/pyos3wq4tchb8ixuyj1c.png)
-
-Tutorial with id=4 was removed from `tutorials` table:
-```testdb=# select * from tutorials;
- id |     title      |    description    | published |         createdAt          |         updatedAt
-----+----------------+-------------------+-----------+----------------------------+----------------------------
-  1 | Node Tut #1    | Tut#1 Description | f         | 2020-01-29 10:42:57.121+07 | 2020-01-29 10:42:57.121+07
-  3 | Node Tut #3    | Tut#3 Description | f         | 2020-01-29 10:43:48.028+07 | 2020-01-29 10:43:48.028+07
-  2 | Node Js Tut #2 | Tut#2 Description | t         | 2020-01-29 10:43:05.131+07 | 2020-01-29 10:51:55.235+07
-  5 | Js Tut #5      | Tut#5 Desc        | t         | 2020-01-29 10:45:44.289+07 | 2020-01-29 10:54:20.544+07
-```
-
-- Delete all Tutorials using `DELETE /tutorials` Api
-
-![node-js-postgresql-crud-example-delete-all](https://dev-to-uploads.s3.amazonaws.com/i/ga42747jorssl20ywyug.png)
-
-Now there are no rows in `tutorials` table:
-```testdb=# select * from tutorials;
- id | title | description | published | createdAt | updatedAt
-----+-------+-------------+-----------+-----------+-----------
-```
-
-For more detail, please visit:
-> [Node.js PostgreSQL CRUD example with Express Rest APIs](https://bezkoder.com/node-express-sequelize-postgresql/)
-
-> [Node.js Express Pagination with PostgreSQL example](https://bezkoder.com/node-js-pagination-postgresql/)
-
-Security:
-> [Node.js JWT Authentication & Authorization with PostgreSQL example](https://bezkoder.com/node-js-jwt-authentication-postgresql/)
-
-Associations:
-> [Sequelize Associations: One-to-Many Relationship example](https://bezkoder.com/sequelize-associate-one-to-many/)
-
-> [Sequelize Associations: Many-to-Many Relationship example](https://bezkoder.com/sequelize-associate-many-to-many/)
-
-Fullstack:
-> [Vue + Node.js + Express + PostgreSQL example](https://bezkoder.com/vue-node-express-postgresql/)
-
-> [React + Node.js + Express + PostgreSQL example](https://bezkoder.com/react-node-express-postgresql/)
-
-> [ANgular 8 + Node.js + Express + PostgreSQL example](https://bezkoder.com/angular-node-express-postgresql/)
-
-> [ANgular 10 + Node.js + Express + PostgreSQL example](https://bezkoder.com/angular-10-node-express-postgresql/)
-
-> [ANgular 11 + Node.js + Express + PostgreSQL example](https://bezkoder.com/angular-11-node-js-express-postgresql/)
-
-## Project setup
-```
+```sh
+nvm use 14
 npm install
 ```
 
-### Run
+Run the application
+
 ```
 node server.js
 ```
+
+## Resources
+
+Cheat Sheet: <https://github.com/enochtangg/quick-SQL-cheatsheet>
+
+Data Types: <https://www.postgresql.org/docs/14/datatype-numeric.html>
