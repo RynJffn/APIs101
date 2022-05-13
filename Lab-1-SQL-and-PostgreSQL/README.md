@@ -37,7 +37,7 @@ To check, you can run `pg_ctl.exe`.
 
 1. Open Command Prompt.
 2. Run `cd "C:\Program Files\PostgreSQL\14\bin"` to change to the PostgreSQL `bin` directory.
-3. Run `pg_ctl.exe status -D "C:\Program Files\PostgreSQL\14\data"
+3. Run `pg_ctl.exe status -D "C:\Program Files\PostgreSQL\14\data"`
 
     ![](./images/pgctl/pgctl-status.png)
 
