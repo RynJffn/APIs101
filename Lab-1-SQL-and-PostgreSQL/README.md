@@ -225,7 +225,7 @@ We can use any condition, however, and may delete multiple rows at once. `DELETE
 </details>
 <br/>
 
-### Query users
+### Query Users
 
 Add the following users to the table:
 
