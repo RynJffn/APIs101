@@ -26,9 +26,39 @@
     - Connection URL: `postgresql://localhost`
 
 </details>
+
+<details>
+<summary>Windows</summary>
+<br/>
+
+Your local server should be running in the background.
+
+To check, you can run `pg_ctl.exe`.
+
+1. Open Command Prompt.
+2. Run `cd "C:\Program Files\PostgreSQL\14\bin"` to change to the PostgreSQL `bin` directory.
+3. Run `pg_ctl.exe status -D "C:\Program Files\PostgreSQL\14\data"
+
+    ![](./images/pgctl/pgctl-status.png)
+
+4. You can `start`, `stop`, or `restart` (shown) your server with a similar call to `pg_ctl.exe`.
+
+    ![](./images/pgctl/pgctl-restart.png)
+
+Your server will run with the following default settings:
+
+- Host: `localhost`
+- Port: `5432`
+- User: `postgres`
+- Database: `postgres`
+- Password: `postgres`
+- Connection URL: `postgresql://localhost`
+</details>
 <br/>
 
 **Open PgAdmin.**
+
+*This will look the same or very similar on Mac and Windows.*
 
 1. Open *PgAdmin*.
 
@@ -83,7 +113,7 @@ Let's say we want to add a column for who reports to whom. We can do this with `
 
 ```sql
 --- ALTER TABLE <table name> ADD COLUMN <column name> <data type> <constraints>;
-ALTER TABLE users ADD COLUMN reports_to INT;
+ALTER TABLE users ADD COLUMN reports_to INTEGER;
 ```
 
 ### Knowledge Check
