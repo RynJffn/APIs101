@@ -64,7 +64,7 @@ Our first task is to create a table. To do that, we use a command `CREATE TABLE`
 
 Our table will contain Users. Users will have an ID, a first name, and a last name.
 
-```postgres
+```sql
 --- CREATE TABLE tells Postgres to create a table. After that we have the table name "users".
 --- The columns are defined in parentheses.
 CREATE TABLE users (
@@ -81,7 +81,7 @@ CREATE TABLE users (
 
 Let's say we want to add a column for who reports to whom. We can do this with `ALTER TABLE`.
 
-```postgres
+```sql
 --- ALTER TABLE <table name> ADD COLUMN <column name> <data type> <constraints>;
 ALTER TABLE users ADD COLUMN reports_to INT;
 ```
@@ -115,14 +115,14 @@ Yes. We did not add the `PRIMARY KEY` constraint (because we already have one) a
 
 To create a user, we use `INSERT`.
 
-```postgres
+```sql
 --- INSERT INTO table(columns) VALUES (column values)
 INSERT INTO users(first_name, last_name) VALUES ('John', 'Smith');
 ```
 
 To see the results, we use `SELECT`.
 
-```postgres
+```sql
 --- SELECT columns FROM table;
 --- * is a wildcard meaning return all columns.
 SELECT * FROM users;
@@ -138,7 +138,7 @@ Notice that `user_id` has been populated automatically but `reports_to` has not.
 
 To just see specific columns, we list them after `SELECT`. For example:
 
-```postgres
+```sql
 SELECT first_name, last_name FROM users;
 ```
 
@@ -150,7 +150,7 @@ returns:
 
 Now let's create a user who reports to John.
 
-```postgres
+```sql
 --- INSERT INTO table(columns) VALUES (column values)
 INSERT INTO users(first_name, last_name, reports_to) VALUES ('Matt', 'Jones', 1);
 SELECT * from users;
@@ -160,14 +160,14 @@ SELECT * from users;
 
 John hires two more employees. Let's add them to the table.
 
-```postgres
+```sql
 INSERT INTO users(first_name, last_name, reports_to) VALUES ('Jennifer', 'Williams', 1);
 SELECT * from users;
 ```
 
 Jennifer says they prefer to use "Jenny" as their first name. We can update their first name using `UPDATE`.
 
-```postgres
+```sql
 --- UPDATE table SET column = value WHERE condition
 UPDATE users SET first_name = 'Jenny' WHERE user_id = 3;
 SELECT * from users;
@@ -177,7 +177,7 @@ SELECT * from users;
 
 Matt wins the lottery and resigns. Let's remove him from the table.
 
-```postgres
+```sql
 --- DELETE FROM table WHERE condition
 DELETE FROM users WHERE user_id = 2;
 SELECT * from users;
@@ -199,7 +199,7 @@ We can use any condition, however, and may delete multiple rows at once. `DELETE
 
 Add the following users to the table:
 
-```postgres
+```sql
 INSERT INTO users (first_name, last_name, reports_to) VALUES ('Stacey', 'Milton', 1);
 INSERT INTO users (first_name, last_name, reports_to) VALUES ('Devan', 'Raines', 1);
 INSERT INTO users (first_name, last_name, reports_to) VALUES ('Andile', 'Perry', 1);
@@ -217,7 +217,7 @@ SELECT * from users;
 
 Find all of John's direct reports.
 
-```postgres
+```sql
 --- Our condition is reports_to = 1 (John)
 SELECT * FROM users WHERE reports_to = 1;
 ```
@@ -226,7 +226,7 @@ Find how many users report to Jenny.
 
 To do this, we can use `COUNT()`.
 
-```postgres
+```sql
 SELECT COUNT(*) FROM users WHERE reports_to = 3;
 ```
 
@@ -234,7 +234,7 @@ SELECT COUNT(*) FROM users WHERE reports_to = 3;
 
 Let's say Devan leaves the company. His direct reports will shift to Ola.
 
-```postgres
+```sql
 UPDATE users SET reports_to = ? WHERE reports_to = ?;
 SELECT * FROM users;
 ```
@@ -243,7 +243,7 @@ SELECT * FROM users;
 <summary>Answer</summary>
 <br/>
 
-```postgres
+```sql
 UPDATE users SET reports_to = 10 WHERE reports_to = 5;
 SELECT * FROM users;
 ```
@@ -254,7 +254,7 @@ SELECT * FROM users;
 
 To `TRUNCATE` our table means to leave the table structure in place and delete all of the rows.
 
-```postgres
+```sql
 --- TRUNCATE table;
 TRUNCATE users;
 SELECT * FROM users;
@@ -264,7 +264,7 @@ The table will be empty.
 
 To `DROP` the table means to completely remove the table and its rows.
 
-```postgres
+```sql
 --- DROP TABLE table;
 DROP TABLE users;
 SELECT * FROM users;
